@@ -12,8 +12,7 @@ bik_link = '/mcirabis/BIK/bik_dc'
 url = 'https://cbr.ru/mcirabis/?PrtId=bic'
 
 # BIK files list in '/Users/TheAceOfSpades/Desktop/izm/' before udpate
-bik_files_list = os.listdir('/Users/TheAceOfSpades/Desktop/izm/')
-bik_files_list.remove('.DS_Store')
+bik_files_list = os.listdir('C:/Users/crazy/Desktop/izm/')
 
 
 def get_links():
@@ -55,19 +54,18 @@ def download_zip():
     dwn_list = []
     dlist = get_links()
     date = valid_links()
-    zip_list = os.listdir('/Users/TheAceOfSpades/Desktop/Бики для обновления/')
-    zip_list.remove('.DS_Store')
+    zip_list = os.listdir('C:/Users/crazy/Desktop/Бики для обновления/')
 
     for i in range(len(dlist)):
         dlist_str = dlist[i][27:51]
         if dlist_str not in zip_list:
             if date == dlist[i][39:47]:
                 print(dlist[i][27:47] + ' downloaded')
-                urllib.request.urlretrieve(dlist[i], '/Users/TheAceOfSpades/Desktop/Бики для обновления/' + dlist_str)
+                urllib.request.urlretrieve(dlist[i], 'C:/Users/crazy/Desktop/Бики для обновления/' + dlist_str)
                 dwn_list.append(dlist_str)
         elif date == dlist[i][39:47]:
             dwn_list.append(dlist_str)
-            print(dlist[i][27:47]+' alredy in /Users/TheAceOfSpades/Desktop/Бики для обновления/')
+            print(dlist[i][27:47]+' alredy in C:/Users/crazy/Desktop/Бики для обновления/')
 
     print('dwn_list is: ', dwn_list)
     return dwn_list
@@ -78,13 +76,13 @@ def zip_extract():
     dwn_list = download_zip()
 
     for i in range(len(dwn_list)):
-        zipobj = zipfile.ZipFile('/Users/TheAceOfSpades/Desktop/Бики для обновления/' + dwn_list[i])
+        zipobj = zipfile.ZipFile('C:/Users/crazy/Desktop/Бики для обновления/' + dwn_list[i])
         zip_file_name_list = zipobj.namelist()
         zip_file_name_list.remove('inf_bik_co.doc')
 
         for j in zip_file_name_list:
             if '.dbf' in j:
-                zipobj.extract(j, '/Users/TheAceOfSpades/Desktop/izm/')
+                zipobj.extract(j, 'C:/Users/crazy/Desktop/Desktop/izm/')
                 name_list.append(j)
 
             if j not in bik_files_list and '.DBF' in j:
@@ -94,20 +92,23 @@ def zip_extract():
                         print('BIK ' + j1 + ' already updated')
                         sys.exit(0)
                     else:
-                        zipobj.extract(j, '/Users/TheAceOfSpades/Desktop/izm/')
+                        zipobj.extract(j, 'C:/Users/crazy/Desktop/izm/')
                         name_list.append(j)
             else:
-                print(j + ' already in /Users/TheAceOfSpades/Desktop/izm/')
+                print(j + ' already in C:/Users/crazy/Desktop/izm/')
 
         zipobj.close()
-        subprocess.Popen(["/usr/bin/open", "-W", "-a", '/Applications/TextEdit.app'])
-        time.sleep(10)
-        subprocess.Popen(["pkill", "-f", "/Applications/TextEdit.app"])
+        subprocess.Popen(['C:/Users/crazy/Desktop/update1.bat'], shell=True)
+        time.sleep(2)
+        procname = "notepad.exe"
+
+            for proc in psutil.process_iter():
+                if proc.name() == procname:
+                    proc.kill()
 
         print(name_list)
 
-        bik_files_list1 = os.listdir('/Users/TheAceOfSpades/Desktop/izm/')
-        bik_files_list1.remove('.DS_Store')
+        bik_files_list1 = os.listdir('C:/Users/crazy/Desktop/izm/')
         if 'co.dbf' in bik_files_list1:
             bik_files_list1.remove('co.dbf')
             difference = list(set(bik_files_list1) - set(bik_files_list))
@@ -129,7 +130,3 @@ zip_extract()
 
 
 # os.remove('code.txt')
-
-
-
-
